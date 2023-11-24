@@ -1,6 +1,11 @@
+/.cache
+/.ccls-cache
+/compile_commands.json
+
 dwl
+dwl.1
+dwl-*.tar.gz
 *.o
 *-protocol.c
 *-protocol.h
-.ccls-cache
 config.h

@@ -294,7 +294,7 @@ static void rendermon(struct wl_listener *listener, void *data);
 static void requeststartdrag(struct wl_listener *listener, void *data);
 static void requestmonstate(struct wl_listener *listener, void *data);
 static void resize(Client *c, struct wlr_box geo, int interact);
-static void run(char *startup_cmd);
+static void run(void);
 static void setcursor(struct wl_listener *listener, void *data);
 static void setcursorshape(struct wl_listener *listener, void *data);
 static void setfloating(Client *c, int floating);
@@ -1957,7 +1957,7 @@ resize(Client *c, struct wlr_box geo, int interact)
 }
 
 void
-run(char *startup_cmd)
+run(void)
 {
 	/* Add a Unix socket to the Wayland display. */
 	const char *socket = wl_display_add_socket_auto(dpy);
@@ -2873,13 +2873,10 @@ xwaylandready(struct wl_listener *listener, void *data)
 int
 main(int argc, char *argv[])
 {
-	char *startup_cmd = NULL;
 	int c;
 
-	while ((c = getopt(argc, argv, "s:hdv")) != -1) {
-		if (c == 's')
-			startup_cmd = optarg;
-		else if (c == 'd')
+	while ((c = getopt(argc, argv, "hdv")) != -1) {
+		if (c == 'd')
 			log_level = WLR_DEBUG;
 		else if (c == 'v')
 			die("dwl " VERSION);
@@ -2893,7 +2890,7 @@ main(int argc, char *argv[])
 	if (!getenv("XDG_RUNTIME_DIR"))
 		die("XDG_RUNTIME_DIR must be set");
 	setup();
-	run(startup_cmd);
+	run();
 	cleanup();
 	return EXIT_SUCCESS;
 
